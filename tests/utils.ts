@@ -2,7 +2,7 @@
 
 import * as assert from 'assert'
 import * as fs from 'fs'
-import { debounce, parseHost, readStreamAll } from '../'
+import { throttle, debounce, parseHost, readStreamAll } from '../'
 import resource from './resources/'
 
 describe('#utils', () => {
@@ -34,6 +34,20 @@ describe('#utils', () => {
 
     setTimeout(() => assert.deepEqual(test, [0, 0, 0, 0]), 30)
     setTimeout(() => assert.deepEqual(test, [0, 0, 0, 1]), 50)
+    setTimeout(done, 55)
+  })
+
+  it('throttle', (done) => {
+    let test = [0, 0, 0, 0]
+
+    const fun = throttle(15)
+
+    setTimeout(() => fun(() => test[0]++), 0)
+    setTimeout(() => fun(() => test[1]++), 10)
+    setTimeout(() => fun(() => test[2]++), 20)
+    setTimeout(() => fun(() => test[3]++), 30)
+
+    setTimeout(() => assert.deepEqual(test, [1, 0, 1, 0]), 50)
     setTimeout(done, 55)
   })
 
