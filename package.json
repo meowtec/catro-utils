@@ -1,0 +1,31 @@
+{
+  "name": "catro-utils",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "i": "npm i babel-cli typescript tslint typings -g && typings install",
+    "build": "rm -rf build && tsc -p . && babel build --out-dir build",
+    "test": "npm run build && cp -r tests/resources ./build/tests/ && mocha build/tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meowtec/catro-utils.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meowtec/catro-utils/issues"
+  },
+  "homepage": "https://github.com/meowtec/catro-utils#readme",
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.7.4",
+    "babel-plugin-transform-es2015-destructuring": "^6.6.5",
+    "babel-plugin-transform-es2015-parameters": "^6.7.0",
+    "babel-plugin-transform-es2015-spread": "^6.6.5",
+    "mocha": "^2.4.5"
+  }
+}
