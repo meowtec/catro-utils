@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/meowtec/catro-utils.git"
   },
-  "author": "",
+  "author": "Berton Zhu<bertonzh@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/meowtec/catro-utils/issues"
