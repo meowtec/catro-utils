@@ -33,17 +33,26 @@ describe('#promosify', () => {
 
 describe('#promosify.fs', () => {
 
-  it('should fs.readFile success', (done) => {
-    const file = resource('./plain/a.txt')
-    const shouldBuffer = sysfs.readFileSync(file)
+  it('should fs.writeFile && fs.readFile success', (done) => {
+    const file = resource('./plain/temp1.txt')
+    const data = Math.random().toString()
 
-    fs.readFile(file)
+    fs.writeFile(file, data)
+    .then(() =>  fs.readFile(file))
     .then((buffer) => {
       assert.ok(buffer instanceof Buffer)
-      assert.equal(shouldBuffer.toString(), buffer.toString())
+      assert.equal(buffer.toString(), data)
     })
     .then(() => fs.readFile(file, 'utf-8'))
-    .then((text) => assert.equal(text, 'this is text.'))
+    .then((text) => assert.equal(text, data))
+    .then(done, done)
+  })
+
+  it('should fs.writeFile fail', (done) => {
+    const file = resource('./plain/deep/not_exist.txt')
+
+    fs.writeFile(file, '')
+    .then((buffer) => assert.fail(), () => {})
     .then(done, done)
   })
 

@@ -2,7 +2,13 @@
 
 import { Readable } from 'stream'
 import { EventEmitter } from 'events'
-import  * as files from 'fs'
+import * as fileSystem from 'fs'
+
+export function noop() {}
+
+export function callif(fun) {
+  fun && fun()
+}
 
 export function promisify<T>(callback: Function, context?, ifErr = true) {
   return (...args) => {
@@ -49,10 +55,9 @@ export function throttle(wait: number, fun0?: Function) {
 
   return (func1?: Function) => {
     let nowDate = Date.now()
-    if (nowDate - lastDate > wait ) {
+    if (nowDate - lastDate > wait) {
       lastDate = nowDate
-      let fun = func1 || fun0
-      fun && fun()
+      callif(func1 || fun0)
     }
   }
 }
@@ -86,9 +91,13 @@ export interface ReadFilePromise {
   (path: string, encoding: string): Promise<string>
 }
 
-export const fs = {
-  readFile: <ReadFilePromise>promisify(files.readFile, files),
-  unlink: promisify(files.unlink, files),
-  exists: promisify<Boolean>(files.exists, files, false)
+export interface WriteFilePromise {
+  (path: string, data): Promise<any>
 }
 
+export const fs = {
+  readFile: <ReadFilePromise>promisify(fileSystem.readFile, fileSystem),
+  writeFile: <WriteFilePromise>promisify(fileSystem.writeFile, fileSystem),
+  unlink: promisify(fileSystem.unlink, fileSystem),
+  exists: promisify<Boolean>(fileSystem.exists, fileSystem, false)
+}
